@@ -8,7 +8,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ParserSteps {
@@ -78,6 +77,16 @@ public class ParserSteps {
 
     @Then("cards not repeat in the desk after drawning")
     public void cardsNotRepeatInTheDeskAfterDrawning() {
+        final List<String> fiveCardList = response.body().jsonPath().getList("cards.code");
+        final List<String> anotherCardList = RestAssured.given().when().get("/" + id + "/draw/?count=47")
+                .body().jsonPath().getList("cards.code");
 
+        boolean isRepeated = false;
+        for (String card : fiveCardList) {
+          if (anotherCardList.stream().anyMatch((s -> s.contains(card))) == true) {
+              isRepeated = true;
+          }
+        }
+        Assert.assertFalse(isRepeated);
     }
 }
