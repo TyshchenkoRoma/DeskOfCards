@@ -7,4 +7,7 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(plugin = { "pretty", "html:target/cucumber" },
         features={ "src/test/resources" },
         tags={ "@SmokeTest" })
-public class TestRunner { }
+
+public class TestRunner {
+
+}

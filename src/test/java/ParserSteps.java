@@ -1,5 +1,3 @@
-package folder;
-
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -81,12 +79,12 @@ public class ParserSteps {
         final List<String> anotherCardList = RestAssured.given().when().get("/" + id + "/draw/?count=47")
                 .body().jsonPath().getList("cards.code");
 
-        boolean isRepeated = false;
+        boolean isRepeated = true;
         for (String card : fiveCardList) {
-          if (anotherCardList.stream().anyMatch((s -> s.contains(card))) == true) {
-              isRepeated = true;
-          }
+          if (anotherCardList.stream().anyMatch((s -> s.contains(card))) == true)
+              isRepeated = false;
         }
-        Assert.assertFalse(isRepeated);
+
+        Assert.assertTrue(isRepeated);
     }
 }
