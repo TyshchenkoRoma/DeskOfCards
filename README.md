@@ -7,7 +7,7 @@ cd DeskOfCards
 ```
 #Report
 ```powershell
-You can fined 2 types of test reports by opening index.html file in the Browser.
+You can fined 2 types of test report by opening index.html file in the Browser.
 The first one in build/reports/tests/test/index.html
 and the second one in target/cucumber/index.html
 ```
