@@ -1,3 +1,4 @@
+@SmokeTest
 Feature: Cucumber run test
 
   I want to play cards
