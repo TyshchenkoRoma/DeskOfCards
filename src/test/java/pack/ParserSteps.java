@@ -78,21 +78,22 @@ public class ParserSteps {
         final List<String> anotherCardList = getResponse("/" + id + "/draw/?count=47")
                 .body().jsonPath().getList("cards.code");
 
-        boolean isRepeated = true;
-        for (String card : fiveCardList) {
-          if (anotherCardList.stream().anyMatch(s -> s.contains(card))) {
-              isRepeated = false;
-          }
-        }
-
-        Assert.assertTrue(isRepeated);
+        Assert.assertTrue(isRepeated(fiveCardList, anotherCardList));
     }
 
-    private static String getDeck_id(String path) {
+    private String getDeck_id(String path) {
         return RestAssured.given().when().get(path).body().jsonPath().getString("deck_id");
     }
 
-    private static Response getResponse(String  path) {
+    private Response getResponse(String path) {
         return RestAssured.given().when().get(path);
+    }
+
+    private boolean isRepeated(List<String> fiveCardList, List<String> anotherCardList) {
+        for (String card : fiveCardList) {
+            if (anotherCardList.stream().anyMatch(s -> s.contains(card)))
+                return false;
+        }
+        return true;
     }
 }
