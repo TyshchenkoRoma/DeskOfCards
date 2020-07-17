@@ -75,7 +75,7 @@ public class ParserSteps {
     @Then("cards not repeat in the desk after drawning")
     public void cardsNotRepeatInTheDeskAfterDrawning() {
         final List<String> fiveCardList = response.body().jsonPath().getList("cards.code");
-        final List<String> anotherCardList = RestAssured.given().when().get("/" + id + "/draw/?count=47")
+        final List<String> anotherCardList = getResponse("/" + id + "/draw/?count=47")
                 .body().jsonPath().getList("cards.code");
 
         boolean isRepeated = true;

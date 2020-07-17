@@ -1,7 +1,5 @@
 @SmokeTest
-Feature: Cucumber run test
-
-  I want to play cards
+Feature: Desc of cards
 
   Scenario Outline: Check if card count in deck is correct after drawing X cards from it
 
