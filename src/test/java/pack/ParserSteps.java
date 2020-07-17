@@ -41,13 +41,13 @@ public class ParserSteps {
         Assert.assertEquals(cardNumber, expectedCount);
     }
 
-    @Given("User has deck with Aceses only")
-    public void userHaveDeckDescWithAcesesOnly() {
+    @Given("User has deck with aces only")
+    public void userHaveDeckDescWithAcesOnly() {
         id = getDeck_id("/new/shuffle/?cards=AS,AD,AC,AH");
     }
 
-    @Then("User can get Aceses only")
-    public void userCanGetAcesesOnly() {
+    @Then("User can get aces only")
+    public void userCanGetAcesOnly() {
         response = getResponse(id + "/draw/?count=4");
         final List<String> acesesList = response.body().jsonPath().getList("cards.code");
 
@@ -64,7 +64,7 @@ public class ParserSteps {
         response = RestAssured.given().when().get("/" + id + "/draw/?count=5");
     }
 
-    @Then("card amound was changed")
+    @Then("card amount was changed")
     public void cardAmoundWasChanged() {
         int actualAmound = response.body().jsonPath().getInt("remaining");
         int expectedAmound = 47;

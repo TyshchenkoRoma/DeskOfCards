@@ -14,12 +14,12 @@ Feature: Desc of cards
 
   Scenario:  Check if user can get only Aceses from desc with Aceses only
 
-    Given User has deck with Aceses only
-    Then User can get Aceses only
+    Given User has deck with aces only
+    Then User can get aces only
 
   Scenario:  Check that cards not repeat in the desk after drawning
 
     Given User has new game with one deck
     When User gets five cards
-    Then card amound was changed
+    Then card amount was changed
     Then cards not repeat in the desk after drawning
