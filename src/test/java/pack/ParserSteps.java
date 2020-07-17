@@ -1,3 +1,5 @@
+package pack;
+
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -21,14 +23,13 @@ public class ParserSteps {
 
     @Given("I have new game with {string} decks")
     public void iHaveNewDescWithDecks(String number) {
-        response = RestAssured.given().when().get("/new/shuffle/?deck_count=" + number);
-        id = response.body().jsonPath().getString("deck_id");
+        id = getDeck_id("/new/shuffle/?deck_count=" + number);
     }
 
     @When("I drow {string} cards")
     public void iDrowCards(String times) {
         for (int i = 0; i < Integer.parseInt(times); i++) {
-            response = RestAssured.given().when().get("/" + id + "/draw/?count=2");
+            response = getResponse("/" + id + "/draw/?count=2");
         }
         cardNumber = response.body().jsonPath().getInt("remaining");
     }
@@ -42,13 +43,12 @@ public class ParserSteps {
 
     @Given("User has deck with Aceses only")
     public void userHaveDeckDescWithAcesesOnly() {
-        response = RestAssured.given().when().get("/new/shuffle/?cards=AS,AD,AC,AH");
-        id = response.body().jsonPath().getString("deck_id");
+        id = getDeck_id("/new/shuffle/?cards=AS,AD,AC,AH");
     }
 
     @Then("User can get Aceses only")
     public void userCanGetAcesesOnly() {
-        response = RestAssured.given().when().get(id + "/draw/?count=4");
+        response = getResponse(id + "/draw/?count=4");
         final List<String> acesesList = response.body().jsonPath().getList("cards.code");
 
         Assert.assertTrue(acesesList.stream().allMatch(s -> s.contains("A")));
@@ -56,8 +56,7 @@ public class ParserSteps {
 
     @Given("User has new game with one deck")
     public void userHasNewGameWithOneDeck() {
-        response = RestAssured.given().when().get("/new/shuffle/?deck_count=1");
-        id = response.body().jsonPath().getString("deck_id");
+        id = getDeck_id("/new/shuffle/?deck_count=1");
     }
 
     @When("User gets five cards")
@@ -81,10 +80,19 @@ public class ParserSteps {
 
         boolean isRepeated = true;
         for (String card : fiveCardList) {
-          if (anotherCardList.stream().anyMatch((s -> s.contains(card))) == true)
+          if (anotherCardList.stream().anyMatch(s -> s.contains(card))) {
               isRepeated = false;
+          }
         }
 
         Assert.assertTrue(isRepeated);
+    }
+
+    private static String getDeck_id(String path) {
+        return RestAssured.given().when().get(path).body().jsonPath().getString("deck_id");
+    }
+
+    private static Response getResponse(String  path) {
+        return RestAssured.given().when().get(path);
     }
 }
