@@ -15,6 +15,7 @@ public class ParserSteps {
     private  final String BASE_URL = "https://deckofcardsapi.com/api/deck";
     private  final String SHUFFLING_URL = "/new/shuffle/?deck_count=";
     private  final String DRAW_URL = "/draw/?count=";
+    private  final String SHUFFL_ACES_ONLY_URL ="/new/shuffle/?cards=AS,AD,AC,AH";
 
     private Response response;
     private String id;
@@ -48,12 +49,12 @@ public class ParserSteps {
 
     @Given("User has deck with aces only")
     public void userHaveDeckDescWithAcesOnly() {
-        id = getDeck_id("/new/shuffle/?cards=AS,AD,AC,AH");
+        id = getDeck_id(SHUFFL_ACES_ONLY_URL);
     }
 
     @Then("User can get aces only")
     public void userCanGetAcesOnly() {
-        response = getResponse(id + "/draw/?count=4");
+        response = getResponse(id + DRAW_URL+ "4");
         final List<String> acesesList = response.body().jsonPath().getList("cards.code");
 
         Assert.assertTrue(acesesList.stream().allMatch(s -> s.contains("A")));
