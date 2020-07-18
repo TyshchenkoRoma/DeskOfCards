@@ -12,24 +12,29 @@ import java.util.List;
 
 public class ParserSteps {
 
+    private  final String BASE_URL = "https://deckofcardsapi.com/api/deck";
+    private  final String SHUFFLING_URL = "/new/shuffle/?deck_count=";
+    private  final String DRAW_URL = "/draw/?count=";
+
     private Response response;
     private String id;
     private int cardNumber;
 
+
     @Before
     public void setUp() {
-        RestAssured.baseURI = "https://deckofcardsapi.com/api/deck";
+        RestAssured.baseURI = BASE_URL;
     }
 
     @Given("I have new game with {string} decks")
     public void iHaveNewDescWithDecks(String number) {
-        id = getDeck_id("/new/shuffle/?deck_count=" + number);
+        id = getDeck_id(SHUFFLING_URL + number);
     }
 
     @When("I drow {string} cards")
     public void iDrowCards(String times) {
         for (int i = 0; i < Integer.parseInt(times); i++) {
-            response = getResponse("/" + id + "/draw/?count=2");
+            response = getResponse("/" + id + DRAW_URL + "2");
         }
         cardNumber = response.body().jsonPath().getInt("remaining");
     }
@@ -56,12 +61,12 @@ public class ParserSteps {
 
     @Given("User has new game with one deck")
     public void userHasNewGameWithOneDeck() {
-        id = getDeck_id("/new/shuffle/?deck_count=1");
+        id = getDeck_id(SHUFFLING_URL +"1");
     }
 
     @When("User gets five cards")
     public void userGetsFiveCards() {
-        response = RestAssured.given().when().get("/" + id + "/draw/?count=5");
+        response = RestAssured.given().when().get("/" + id + DRAW_URL +"5");
     }
 
     @Then("card amount was changed")
@@ -75,7 +80,7 @@ public class ParserSteps {
     @Then("cards not repeat in the desk after drawning")
     public void cardsNotRepeatInTheDeskAfterDrawning() {
         final List<String> fiveCardList = response.body().jsonPath().getList("cards.code");
-        final List<String> anotherCardList = getResponse("/" + id + "/draw/?count=47")
+        final List<String> anotherCardList = getResponse("/" + id + DRAW_URL+"47")
                 .body().jsonPath().getList("cards.code");
 
         Assert.assertTrue(isRepeated(fiveCardList, anotherCardList));
