@@ -12,7 +12,7 @@ Feature: Desc of cards
       | 2     | 308       |
       | 10    | 292       |
 
-  Scenario:  Check if user can get only Aceses from desc with Aceses only
+  Scenario:  Check if user can get only Aces from desc with Aces only
 
     Given User has deck with aces only
     Then User can get aces only
